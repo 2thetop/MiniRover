@@ -7,7 +7,7 @@
 //    
 //    최종 수정	: 
 //
-//    MPU_Type	: 
+//    MPU_Type	: Arduino Micro
 //
 //    파일명		: 
 //----------------------------------------------------------------------------
@@ -121,10 +121,41 @@ void MSP_Cmd_MSP_SET_RAW_RC_TINY( void )
     int16_t Speed;
     int16_t Dir;
 
+    uint8_t Aux1;
+    uint8_t Aux2;
+    uint8_t Aux3;
+    uint8_t Aux4;
+
+
     Roll     = 1000 + pCmd->Data[0] * 4;
     Pitch    = 1000 + pCmd->Data[1] * 4;
     Yaw      = 1000 + pCmd->Data[2] * 4;
     Throthle = 1000 + pCmd->Data[3] * 4;
+
+    Aux1 = ( pCmd->Data[4] >> 6 ) & 0x03;
+    Aux2 = ( pCmd->Data[4] >> 4 ) & 0x03;
+    Aux3 = ( pCmd->Data[4] >> 2 ) & 0x03;
+    Aux4 = ( pCmd->Data[4] >> 0 ) & 0x03; 
+
+    /*
+        pCmd->Data[0] : 0~250 - Roll 값 
+        pCmd->Data[1] : 0~250 - Pitch 값 
+        pCmd->Data[2] : 0~250 - Yaw 값
+        pCmd->Data[3] : 0~250 - Throttle 값 
+        pCmd->Data[4] : 0~255 - Aux 값 
+            7:6  Aux1
+            5:4  Aux2
+            3:2  Aux3
+            1:0  Aux4
+
+        Aux1 
+            - 0 : Headfree Mode Off 
+            - 2 : Headfree Mode On
+        Aux2
+            - 0 : 고도홀드 Off
+            - 2 : 고도홀드 On
+    */
+
 
     /*
     Serial.print("Receive : ");
@@ -132,6 +163,15 @@ void MSP_Cmd_MSP_SET_RAW_RC_TINY( void )
     Serial.print(Pitch);    Serial.print("\t"); 
     Serial.print(Yaw);      Serial.print("\t"); 
     Serial.print(Throthle); Serial.print("\t"); 
+    Serial.println(" ");
+    */
+
+    /*
+    Serial.print("Receive Aux: \t");
+    Serial.print(Aux1); Serial.print("\t"); 
+    Serial.print(Aux2); Serial.print("\t"); 
+    Serial.print(Aux3); Serial.print("\t"); 
+    Serial.print(Aux4); Serial.print("\t"); 
     Serial.println(" ");
     */
 
